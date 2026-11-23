@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDesk Escolar - Ver chamados</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3fd0bc">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-conteudo">
+            <span class="topo-marca">HelpDesk Escolar</span>
+            <nav class="topo-nav">
+                <a href="index.html">Abrir chamado</a>
+                <a href="chamados.html" class="ativo">Ver chamados</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h1>Lista de chamados</h1>
+        <p class="subtitulo">Acompanhe os chamados, busque por texto, filtre, ordene e exporte.</p>
+
+        <!-- Contadores por status 
+        <div class="contadores" aria-label="Resumo por status">
+            <div class="contador"><strong id="contador-aberto">0</strong><span>Abertos</span></div>
+            <div class="contador"><strong id="contador-andamento">0</strong><span>Em andamento</span></div>
+            <div class="contador"><strong id="contador-resolvido">0</strong><span>Resolvidos</span></div>
+        </div>-->
+
+        <div class="barra-filtros">
+            <div class="campo campo-largo">
+                <label for="campo-busca">Buscar</label>
+                <input type="search" id="campo-busca" placeholder="Solicitante, setor ou descrição">
+            </div>
+            <div class="campo">
+                <label for="filtro-status">Status</label>
+                <select id="filtro-status">
+                    <option value="Todos">Todos</option>
+                    <option value="Aberto">Aberto</option>
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Resolvido">Resolvido</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="filtro-prioridade">Prioridade</label>
+                <select id="filtro-prioridade">
+                    <option value="Todas">Todas</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Média</option>
+                    <option value="Baixa">Baixa</option>
+                </select>
+            </div>
+            <div class="campo">
+                <label for="campo-ordem">Ordenar por</label>
+                <select id="campo-ordem">
+                    <option value="recentes">Mais recentes</option>
+                    <option value="antigos">Mais antigos</option>
+                    <option value="prioridade">Prioridade (alta primeiro)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="barra-exportar">
+            <button type="button" id="botao-exportar" class="botao-secundario">Exportar CSV</button>
+        </div>
+
+        <div id="mensagem-vazia" class="cartao mensagem-vazia" hidden>Nenhum chamado encontrado.</div>
+        <div id="lista-chamados"></div>
+    </main>
+
+    <script src="storage.js"></script>
+    <script src="chamados.js"></script>
+    <script src="pwa.js"></script>
+</body>
+</html>

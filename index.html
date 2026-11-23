@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDesk Escolar - Abrir chamado</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3fd0bc">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-conteudo">
+            <span class="topo-marca">HelpDesk Escolar</span>
+            <nav class="topo-nav">
+                <a href="index.html" class="ativo">Abrir chamado</a>
+                <a href="chamados.html">Ver chamados</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h1 id="titulo-pagina">Abrir novo chamado</h1>
+        <p class="subtitulo" id="subtitulo-pagina">Descreva o problema encontrado na escola. A equipe responsável vai analisar e atualizar o status.</p>
+
+        <div class="cartao">
+            <form id="form-chamado" novalidate>
+                <div class="campo-duplo">
+                    <div class="campo">
+                        <label for="nome">Nome do solicitante</label>
+                        <input type="text" name="nome" id="nome" placeholder="Ex: Maria Silva" required>
+                    </div>
+                    <div class="campo">
+                        <label for="setor">Setor</label>
+                        <input type="text" name="setor" id="setor" placeholder="Ex: Sala 12, Laboratório 2" required>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="prioridade">Prioridade</label>
+                    <select name="prioridade" id="prioridade" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Media">Média</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="descricao">Descrição do problema</label>
+                    <textarea name="descricao" id="descricao" rows="4" placeholder="Explique com detalhes o que está acontecendo" required></textarea>
+                </div>
+
+                <button type="submit" class="botao-principal" id="botao-enviar">Registrar chamado</button>
+                <p class="mensagem-status" id="mensagem-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </main>
+
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+    <script src="pwa.js"></script>
+</body>
+</html>
