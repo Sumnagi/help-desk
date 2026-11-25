@@ -440,7 +440,7 @@ textarea {
 
 /* ===== Login do administrador ===== */
 .cartao-login {
-    max-width: 460px;
+    width: 100%;
     margin: 0 auto;
 }
 
