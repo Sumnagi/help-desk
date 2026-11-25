@@ -64,15 +64,16 @@ h1, .topo-marca, .numero-chamado {
     letter-spacing: 0.04em;
 }
 
-/* olho de carretel */
-.topo-marca::before {
-    content: "";
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--tinta) 0 24%, var(--lilas) 26% 100%);
+.logo-escola {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    background: #ffffff;
+    padding: 3px;
+    border-radius: 8px;
     border: var(--contorno);
     box-shadow: 2px 2px 0 var(--tinta);
+    flex-shrink: 0;
 }
 
 .topo-nav {
