@@ -52,6 +52,13 @@ async function iniciarModoEdicao() {
     const idParam = new URLSearchParams(window.location.search).get("editar");
     if (idParam === null) return;
 
+    // Só o administrador logado pode editar
+    const sessao = await obterSessao();
+    if (!sessao) {
+        window.location.href = "chamados.html";
+        return;
+    }
+
     const chamado = await obterChamado(Number(idParam));
     if (!chamado) {
         exibirMensagem("Chamado não encontrado.", "erro");
