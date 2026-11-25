@@ -23,54 +23,71 @@
 
     <main class="conteudo">
         <h1>Lista de chamados</h1>
-        <p class="subtitulo">Acompanhe os chamados, busque por texto, filtre, ordene e exporte.</p>
 
-        <!-- Contadores por status 
-        <div class="contadores" aria-label="Resumo por status">
-            <div class="contador"><strong id="contador-aberto">0</strong><span>Abertos</span></div>
-            <div class="contador"><strong id="contador-andamento">0</strong><span>Em andamento</span></div>
-            <div class="contador"><strong id="contador-resolvido">0</strong><span>Resolvidos</span></div>
-        </div>-->
+        <!-- Login: aparece quando não há administrador logado -->
+        <section id="area-login" hidden>
+            <p class="subtitulo">Área restrita. Entre com o e-mail e a senha de administrador.</p>
+            <div class="cartao cartao-login">
+                <form id="form-login">
+                    <div class="campo">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" autocomplete="username" required>
+                    </div>
+                    <div class="campo">
+                        <label for="login-senha">Senha</label>
+                        <input type="password" id="login-senha" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="botao-principal">Entrar</button>
+                    <p class="mensagem-status" id="mensagem-login" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
 
-        <div class="barra-filtros">
-            <div class="campo campo-largo">
-                <label for="campo-busca">Buscar</label>
-                <input type="search" id="campo-busca" placeholder="Solicitante, setor ou descrição">
+        <!-- Lista: aparece só para o administrador logado -->
+        <div id="area-admin" hidden>
+            <p class="subtitulo">Acompanhe os chamados, busque por texto, filtre, ordene e exporte.</p>
+
+            <div class="barra-filtros">
+                <div class="campo campo-largo">
+                    <label for="campo-busca">Buscar</label>
+                    <input type="search" id="campo-busca" placeholder="Solicitante, setor ou descrição">
+                </div>
+                <div class="campo">
+                    <label for="filtro-status">Status</label>
+                    <select id="filtro-status">
+                        <option value="Todos">Todos</option>
+                        <option value="Aberto">Aberto</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Resolvido">Resolvido</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="filtro-prioridade">Prioridade</label>
+                    <select id="filtro-prioridade">
+                        <option value="Todas">Todas</option>
+                        <option value="Alta">Alta</option>
+                        <option value="Media">Média</option>
+                        <option value="Baixa">Baixa</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="campo-ordem">Ordenar por</label>
+                    <select id="campo-ordem">
+                        <option value="recentes">Mais recentes</option>
+                        <option value="antigos">Mais antigos</option>
+                        <option value="prioridade">Prioridade (alta primeiro)</option>
+                    </select>
+                </div>
             </div>
-            <div class="campo">
-                <label for="filtro-status">Status</label>
-                <select id="filtro-status">
-                    <option value="Todos">Todos</option>
-                    <option value="Aberto">Aberto</option>
-                    <option value="Em andamento">Em andamento</option>
-                    <option value="Resolvido">Resolvido</option>
-                </select>
+
+            <div class="barra-exportar">
+                <button type="button" id="botao-sair" class="botao-secundario">Sair</button>
+                <button type="button" id="botao-exportar" class="botao-secundario">Exportar CSV</button>
             </div>
-            <div class="campo">
-                <label for="filtro-prioridade">Prioridade</label>
-                <select id="filtro-prioridade">
-                    <option value="Todas">Todas</option>
-                    <option value="Alta">Alta</option>
-                    <option value="Media">Média</option>
-                    <option value="Baixa">Baixa</option>
-                </select>
-            </div>
-            <div class="campo">
-                <label for="campo-ordem">Ordenar por</label>
-                <select id="campo-ordem">
-                    <option value="recentes">Mais recentes</option>
-                    <option value="antigos">Mais antigos</option>
-                    <option value="prioridade">Prioridade (alta primeiro)</option>
-                </select>
-            </div>
+
+            <div id="mensagem-vazia" class="cartao mensagem-vazia" hidden>Nenhum chamado encontrado.</div>
+            <div id="lista-chamados"></div>
         </div>
-
-        <div class="barra-exportar">
-            <button type="button" id="botao-exportar" class="botao-secundario">Exportar CSV</button>
-        </div>
-
-        <div id="mensagem-vazia" class="cartao mensagem-vazia" hidden>Nenhum chamado encontrado.</div>
-        <div id="lista-chamados"></div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
