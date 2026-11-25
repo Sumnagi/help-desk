@@ -1,5 +1,3 @@
-
-
 const containerLista = document.getElementById("lista-chamados");
 const mensagemVazia = document.getElementById("mensagem-vazia");
 const filtroStatus = document.getElementById("filtro-status");
@@ -19,11 +17,12 @@ botaoExportar.addEventListener("click", exportarCSV);
 
 renderizarLista();
 
-/** Atualiza contadores e desenha a lista conforme filtros e ordem. */
-function renderizarLista() {
-    atualizarContadores();
+/** Carrega os chamados do banco, aplica filtros/ordem e desenha a lista. */
+async function renderizarLista() {
+    const todos = await listarChamados();
+    atualizarContadores(todos);
 
-    const filtrados = filtrarChamados({
+    const filtrados = filtrarLista(todos, {
         status: filtroStatus.value,
         prioridade: filtroPrioridade.value,
         termo: campoBusca.value,
@@ -43,11 +42,9 @@ function renderizarLista() {
     });
 }
 
-/**
- * Mostra quantos chamados há em cada status (total, sem filtros).
- */
-function atualizarContadores() {
-    const contagem = contarPorStatus();
+/** Mostra quantos chamados há em cada status (total, sem filtros). */
+function atualizarContadores(todos) {
+    const contagem = contarPorStatus(todos);
     const campos = {
         "contador-aberto": contagem["Aberto"],
         "contador-andamento": contagem["Em andamento"],
@@ -61,13 +58,14 @@ function atualizarContadores() {
 }
 
 /** Baixa um arquivo CSV com todos os chamados. */
-function exportarCSV() {
-    if (listarChamados().length === 0) {
+async function exportarCSV() {
+    const todos = await listarChamados();
+    if (todos.length === 0) {
         alert("Não há chamados para exportar.");
         return;
     }
 
-    const blob = new Blob([gerarCSV()], { type: "text/csv;charset=utf-8" });
+    const blob = new Blob([gerarCSV(todos)], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -126,8 +124,8 @@ function criarCartaoChamado(chamado) {
         opcao.selected = status === chamado.status;
         selectStatus.appendChild(opcao);
     });
-    selectStatus.addEventListener("change", () => {
-        atualizarStatus(chamado.id, selectStatus.value);
+    selectStatus.addEventListener("change", async () => {
+        await atualizarStatus(chamado.id, selectStatus.value);
         renderizarLista();
     });
 
@@ -136,9 +134,9 @@ function criarCartaoChamado(chamado) {
 
     const botaoExcluir = criarElemento("button", "botao-excluir", "Excluir");
     botaoExcluir.type = "button";
-    botaoExcluir.addEventListener("click", () => {
+    botaoExcluir.addEventListener("click", async () => {
         if (confirm(`Excluir o chamado #${chamado.id}? Esta ação não pode ser desfeita.`)) {
-            removerChamado(chamado.id);
+            await removerChamado(chamado.id);
             renderizarLista();
         }
     });
