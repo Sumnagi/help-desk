@@ -35,20 +35,16 @@ async function obterChamado(id) {
     return converterLinha(data);
 }
 
-/** Cadastra um novo chamado com status "Aberto". */
+/** Cadastra um novo chamado (qualquer pessoa pode; usa uma função do banco). */
 async function salvarChamado(dados) {
-    const { data, error } = await db
-        .from("chamados")
-        .insert({
-            nome: dados.nome,
-            setor: dados.setor,
-            prioridade: dados.prioridade,
-            descricao: dados.descricao,
-        })
-        .select()
-        .single();
+    const { data, error } = await db.rpc("criar_chamado", {
+        p_nome: dados.nome,
+        p_setor: dados.setor,
+        p_prioridade: dados.prioridade,
+        p_descricao: dados.descricao,
+    });
     if (error) throw error;
-    return converterLinha(data);
+    return { id: data };
 }
 
 /** Atualiza o status de um chamado. */
@@ -131,4 +127,22 @@ function gerarCSV(lista) {
     );
 
     return "\uFEFF" + [cabecalho.map(escapar).join(";"), ...linhas].join("\r\n");
+}
+
+// ===== Login do administrador =====
+
+/** Devolve a sessão atual (ou null se não estiver logado). */
+async function obterSessao() {
+    const { data } = await db.auth.getSession();
+    return data.session;
+}
+
+/** Tenta entrar. Devolve o erro, ou null se deu certo. */
+async function entrar(email, senha) {
+    const { error } = await db.auth.signInWithPassword({ email, password: senha });
+    return error;
+}
+
+async function sair() {
+    await db.auth.signOut();
 }
