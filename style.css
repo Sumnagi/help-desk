@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Orbitron:wght@700;800&display=swap');
 
 :root {
-    --noite: #150f26;          
-    --carta: #2d2060;         
-    --violeta: #7a4bd6;        
-    --lilas: #c9b2ff;          
-    --visor: #3fd0bc;         
-    --rosa: #e060c8;           
-    --campo: #f1eaff;         
+    --noite: #150f26;
+    --carta: #2d2060;
+    --violeta: #7a4bd6;
+    --lilas: #c9b2ff;
+    --visor: #3fd0bc;
+    --rosa: #e060c8;
+    --campo: #f1eaff;
 
-    --tinta: #0d0818;         
+    --tinta: #0d0818;
     --texto: #f3ecff;
     --texto-suave: #bfb0e6;
     --alerta: #ff8fa8;
@@ -19,7 +19,9 @@
     --sombra-pequena: 3px 3px 0 var(--tinta);
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -42,7 +44,7 @@ h1, .topo-marca, .numero-chamado {
 }
 
 .topo-conteudo {
-    max-width: 720px;
+    max-width: 820px;
     margin: 0 auto;
     padding: 14px 24px;
     display: flex;
@@ -73,7 +75,11 @@ h1, .topo-marca, .numero-chamado {
     box-shadow: 2px 2px 0 var(--tinta);
 }
 
-.topo-nav { display: flex; gap: 10px; }
+.topo-nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
 .topo-nav a {
     color: var(--tinta);
@@ -101,7 +107,7 @@ h1, .topo-marca, .numero-chamado {
 
 /* ===== Conteúdo ===== */
 .conteudo {
-    max-width: 720px;
+    max-width: 820px;
     margin: 0 auto;
     padding: 40px 24px 80px;
 }
@@ -120,7 +126,7 @@ h1 {
     color: var(--texto-suave);
     font-size: 16px;
     line-height: 1.5;
-    max-width: 50ch;
+    max-width: 60ch;
 }
 
 .cartao {
@@ -132,7 +138,9 @@ h1 {
 }
 
 /* ===== Formulário ===== */
-.campo { margin-bottom: 20px; }
+.campo {
+    margin-bottom: 20px;
+}
 
 .campo-duplo {
     display: grid;
@@ -159,7 +167,9 @@ input, select, textarea {
     background: var(--campo);
 }
 
-input::placeholder, textarea::placeholder { color: #7a6fa3; }
+input::placeholder, textarea::placeholder {
+    color: #7a6fa3;
+}
 
 input:read-only {
     background: #cfc3ee;
@@ -172,7 +182,9 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 3px 3px 0 var(--visor);
 }
 
-textarea { resize: vertical; }
+textarea {
+    resize: vertical;
+}
 
 /* ===== Botões ===== */
 .botao-principal,
@@ -225,7 +237,9 @@ textarea { resize: vertical; }
     margin-top: 8px;
 }
 
-.botao-principal:hover { background: #8a5be0; }
+.botao-principal:hover {
+    background: #8a5be0;
+}
 
 .botao-secundario {
     padding: 10px 20px;
@@ -261,8 +275,13 @@ textarea { resize: vertical; }
     font-weight: 700;
 }
 
-.mensagem-status-sucesso { color: var(--visor); }
-.mensagem-status-erro { color: var(--alerta); }
+.mensagem-status-sucesso {
+    color: var(--visor);
+}
+
+.mensagem-status-erro {
+    color: var(--alerta);
+}
 
 /* ===== Listagem ===== */
 .barra-filtros {
@@ -277,11 +296,15 @@ textarea { resize: vertical; }
     box-shadow: var(--sombra);
 }
 
-.barra-filtros .campo-largo { grid-column: 1 / -1; }
+.barra-filtros .campo-largo {
+    grid-column: 1 / -1;
+}
 
 .barra-exportar {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
     margin: 24px 0 20px;
 }
 
@@ -311,7 +334,10 @@ textarea { resize: vertical; }
     letter-spacing: 0.05em;
 }
 
-.contador span { font-size: 13px; font-weight: 700; }
+.contador span {
+    font-size: 13px;
+    font-weight: 700;
+}
 
 .mensagem-vazia {
     text-align: center;
@@ -319,7 +345,9 @@ textarea { resize: vertical; }
     font-weight: 500;
 }
 
-.mensagem-vazia[hidden] { display: none; }
+.mensagem-vazia[hidden] {
+    display: none;
+}
 
 #lista-chamados {
     display: flex;
@@ -339,6 +367,8 @@ textarea { resize: vertical; }
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
     margin-bottom: 12px;
 }
 
@@ -384,7 +414,9 @@ textarea { resize: vertical; }
     overflow-wrap: anywhere;
 }
 
-.detalhes-chamado strong { color: var(--texto); }
+.detalhes-chamado strong {
+    color: var(--texto);
+}
 
 .acoes-chamado {
     display: flex;
@@ -399,9 +431,16 @@ textarea { resize: vertical; }
 .acoes-chamado select {
     width: auto;
     flex: 1;
+    min-width: 150px;
     max-width: 200px;
     padding: 8px 12px;
     font-weight: 500;
+}
+
+/* ===== Login do administrador ===== */
+.cartao-login {
+    max-width: 460px;
+    margin: 0 auto;
 }
 
 /* ===== Mobile ===== */
@@ -409,7 +448,7 @@ textarea { resize: vertical; }
     h1 { font-size: 30px; }
     .cartao { padding: 22px; }
     .campo-duplo { grid-template-columns: 1fr; gap: 0; }
-    .barra-filtros { grid-template-columns: 1fr; gap: 0; }
+    .barra-filtros { grid-template-columns: 1fr; gap: 4px; }
     .cartao-chamado { padding: 20px; }
     .contadores { grid-template-columns: 1fr; }
 }
@@ -418,9 +457,6 @@ textarea { resize: vertical; }
     * { transition: none !important; }
 }
 
-/* ===== Login do administrador ===== */
-[hidden] { display: none !important; }
-
-.cartao-login { max-width: 420px; }
-
-.barra-exportar { gap: 12px; }
+[hidden] {
+    display: none !important;
+}
