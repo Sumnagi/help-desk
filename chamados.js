@@ -5,6 +5,11 @@ const filtroPrioridade = document.getElementById("filtro-prioridade");
 const campoBusca = document.getElementById("campo-busca");
 const campoOrdem = document.getElementById("campo-ordem");
 const botaoExportar = document.getElementById("botao-exportar");
+const areaLogin = document.getElementById("area-login");
+const areaAdmin = document.getElementById("area-admin");
+const formLogin = document.getElementById("form-login");
+const mensagemLogin = document.getElementById("mensagem-login");
+const botaoSair = document.getElementById("botao-sair");
 
 const STATUS_DISPONIVEIS = ["Aberto", "Em andamento", "Resolvido"];
 const NOMES_PRIORIDADE = { Baixa: "Baixa", Media: "Média", Alta: "Alta" };
@@ -15,7 +20,39 @@ const NOMES_PRIORIDADE = { Baixa: "Baixa", Media: "Média", Alta: "Alta" };
 campoBusca.addEventListener("input", renderizarLista);
 botaoExportar.addEventListener("click", exportarCSV);
 
-renderizarLista();
+formLogin.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+    mensagemLogin.textContent = "Entrando...";
+    mensagemLogin.className = "mensagem-status";
+
+    const erro = await entrar(
+        document.getElementById("login-email").value.trim(),
+        document.getElementById("login-senha").value
+    );
+    if (erro) {
+        mensagemLogin.textContent = "E-mail ou senha incorretos.";
+        mensagemLogin.className = "mensagem-status mensagem-status-erro";
+        return;
+    }
+    formLogin.reset();
+    mensagemLogin.textContent = "";
+    iniciar();
+});
+
+botaoSair.addEventListener("click", async () => {
+    await sair();
+    iniciar();
+});
+
+/** Mostra o login ou a lista, conforme a sessão. */
+async function iniciar() {
+    const sessao = await obterSessao();
+    areaLogin.hidden = !!sessao;
+    areaAdmin.hidden = !sessao;
+    if (sessao) renderizarLista();
+}
+
+iniciar();
 
 /** Carrega os chamados do banco, aplica filtros/ordem e desenha a lista. */
 async function renderizarLista() {
