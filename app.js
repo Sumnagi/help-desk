@@ -1,13 +1,13 @@
-
 const formChamado = document.getElementById("form-chamado");
 const mensagemStatus = document.getElementById("mensagem-status");
+const botaoEnviar = document.getElementById("botao-enviar");
 
 let idEmEdicao = null;
 
 if (formChamado) {
     iniciarModoEdicao();
 
-    formChamado.addEventListener("submit", function (evento) {
+    formChamado.addEventListener("submit", async function (evento) {
         evento.preventDefault();
 
         const dadosChamado = {
@@ -22,28 +22,37 @@ if (formChamado) {
             return;
         }
 
-        if (idEmEdicao !== null) {
-            editarChamado(idEmEdicao, {
-                descricao: dadosChamado.descricao,
-                prioridade: dadosChamado.prioridade,
-            });
-            exibirMensagem("Chamado atualizado! Voltando para a lista...", "sucesso");
-            setTimeout(() => (window.location.href = "chamados.html"), 900);
-            return;
-        }
+        botaoEnviar.disabled = true;
+        try {
+            if (idEmEdicao !== null) {
+                const ok = await editarChamado(idEmEdicao, {
+                    descricao: dadosChamado.descricao,
+                    prioridade: dadosChamado.prioridade,
+                });
+                if (!ok) throw new Error("falha ao editar");
+                exibirMensagem("Chamado atualizado! Voltando para a lista...", "sucesso");
+                setTimeout(() => (window.location.href = "chamados.html"), 900);
+                return;
+            }
 
-        const chamadoCriado = salvarChamado(dadosChamado);
-        exibirMensagem(`Chamado #${chamadoCriado.id} registrado com sucesso!`, "sucesso");
-        formChamado.reset();
+            const chamadoCriado = await salvarChamado(dadosChamado);
+            exibirMensagem(`Chamado #${chamadoCriado.id} registrado com sucesso!`, "sucesso");
+            formChamado.reset();
+        } catch (erro) {
+            console.error(erro);
+            exibirMensagem("Não foi possível salvar. Verifique a conexão e tente de novo.", "erro");
+        } finally {
+            botaoEnviar.disabled = false;
+        }
     });
 }
 
 /** Se a URL tiver ?editar=ID, preenche o formulário com o chamado. */
-function iniciarModoEdicao() {
+async function iniciarModoEdicao() {
     const idParam = new URLSearchParams(window.location.search).get("editar");
     if (idParam === null) return;
 
-    const chamado = obterChamado(Number(idParam));
+    const chamado = await obterChamado(Number(idParam));
     if (!chamado) {
         exibirMensagem("Chamado não encontrado.", "erro");
         return;
@@ -53,7 +62,7 @@ function iniciarModoEdicao() {
     document.getElementById("titulo-pagina").textContent = "Editar chamado #" + chamado.id;
     document.getElementById("subtitulo-pagina").textContent =
         "Você pode alterar a prioridade e a descrição do chamado.";
-    document.getElementById("botao-enviar").textContent = "Salvar alterações";
+    botaoEnviar.textContent = "Salvar alterações";
 
     const campoNome = document.getElementById("nome");
     const campoSetor = document.getElementById("setor");
@@ -66,12 +75,7 @@ function iniciarModoEdicao() {
 }
 
 function validarDadosChamado(dados) {
-    return (
-        dados.nome !== "" &&
-        dados.setor !== "" &&
-        dados.prioridade !== "" &&
-        dados.descricao !== ""
-    );
+    return dados.nome !== "" && dados.setor !== "" && dados.prioridade !== "" && dados.descricao !== "";
 }
 
 function exibirMensagem(texto, tipo) {
