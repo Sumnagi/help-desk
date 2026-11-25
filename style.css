@@ -1,16 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Orbitron:wght@700;800&display=swap');
 
 :root {
-    /* Paleta: cena roxa, visor digital turquesa, olhos de carretel */
-    --noite: #150f26;          /* fundo da cena */
-    --carta: #2d2060;          /* roxo sombreado dos cartões */
-    --violeta: #7a4bd6;        /* roxo vivo (ação principal) */
-    --lilas: #c9b2ff;          /* luz sobre o roxo */
-    --visor: #3fd0bc;          /* turquesa do cronômetro */
-    --rosa: #e060c8;           /* reflexo magenta */
-    --campo: #f1eaff;          /* campos de formulário */
+    --noite: #150f26;          
+    --carta: #2d2060;         
+    --violeta: #7a4bd6;        
+    --lilas: #c9b2ff;          
+    --visor: #3fd0bc;         
+    --rosa: #e060c8;           
+    --campo: #f1eaff;         
 
-    --tinta: #0d0818;          /* contornos e texto escuro */
+    --tinta: #0d0818;         
     --texto: #f3ecff;
     --texto-suave: #bfb0e6;
     --alerta: #ff8fa8;
@@ -418,3 +417,10 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
 }
+
+/* ===== Login do administrador ===== */
+[hidden] { display: none !important; }
+
+.cartao-login { max-width: 420px; }
+
+.barra-exportar { gap: 12px; }
