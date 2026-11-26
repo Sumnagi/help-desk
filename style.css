@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Orbitron:wght@700;800&display=swap');
 
 :root {
-    --noite: #150f26;
-    --carta: #2d2060;
-    --violeta: #7a4bd6;
-    --lilas: #c9b2ff;
-    --visor: #3fd0bc;
-    --rosa: #e060c8;
-    --campo: #f1eaff;
+    /* mudei as cores para a paleta da E.E. João Lopes*/
+    --noite: #07242b;
+    --carta: #0e3f4a;
+    --violeta: #12808a;   /* (nome mantido para não quebrar o CSS) */
+    --lilas: #a9ddd3;
+    --visor: #7fe0c0;
+    --rosa: #ff9b85;
+    --campo: #eaf7f4;
 
-    --tinta: #0d0818;
-    --texto: #f3ecff;
-    --texto-suave: #bfb0e6;
-    --alerta: #ff8fa8;
+    --tinta: #04161a;
+    --texto: #eaf7f4;
+    --texto-suave: #9fcac6;
+    --alerta: #ff9b85;
 
     --contorno: 2.5px solid var(--tinta);
     --sombra: 5px 5px 0 var(--violeta);
@@ -27,7 +28,7 @@ body {
     margin: 0;
     font-family: 'DM Sans', system-ui, sans-serif;
     background-color: var(--noite);
-    background-image: radial-gradient(rgba(138, 91, 224, 0.16) 1.5px, transparent 1.5px);
+    background-image: radial-gradient(rgba(70, 190, 170, 0.14) 1.5px, transparent 1.5px);
     background-size: 22px 22px;
     color: var(--texto);
 }
@@ -35,7 +36,6 @@ body {
 h1, .topo-marca, .numero-chamado {
     font-family: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
 }
-
 /* ===== Topo: faixa do visor digital ===== */
 .topo {
     background: var(--visor);
@@ -169,12 +169,12 @@ input, select, textarea {
 }
 
 input::placeholder, textarea::placeholder {
-    color: #7a6fa3;
+    color: #5f8a88;
 }
 
 input:read-only {
-    background: #cfc3ee;
-    color: #4a3f73;
+    background: #bcdad5;
+    color: #2e5a58;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -239,7 +239,7 @@ textarea {
 }
 
 .botao-principal:hover {
-    background: #8a5be0;
+    background: #16a0a6;
 }
 
 .botao-secundario {
@@ -426,7 +426,7 @@ textarea {
     gap: 12px;
     margin-top: 18px;
     padding-top: 18px;
-    border-top: 2.5px dashed #5b44a5;
+    border-top: 2.5px dashed #2a7076;
 }
 
 .acoes-chamado select {
