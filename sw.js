@@ -1,5 +1,5 @@
 /* sw.js - Service worker: rede primeiro, cache como reserva (funciona offline). */
-const CACHE = "helpdesk-v9";
+const CACHE = "helpdesk-v10";
 const ARQUIVOS = [
     "./",
     "index.html",
