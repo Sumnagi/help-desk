@@ -18,7 +18,7 @@ function converterLinha(l) {
     };
 }
 
-/** Busca os chamados (o banco já filtra: admin vê todos, usuário vê os seus). */
+/** Busca todos os chamados. Retorna [] em caso de erro. */
 async function listarChamados() {
     const { data, error } = await db.from("chamados").select("*").order("id", { ascending: false });
     if (error) {
@@ -35,7 +35,7 @@ async function obterChamado(id) {
     return converterLinha(data);
 }
 
-/** Cadastra um novo chamado (exige login; usa uma função do banco). */
+/** Cadastra um novo chamado (qualquer pessoa pode; usa uma função do banco). */
 async function salvarChamado(dados) {
     const { data, error } = await db.rpc("criar_chamado", {
         p_nome: dados.nome,
@@ -129,7 +129,7 @@ function gerarCSV(lista) {
     return "\uFEFF" + [cabecalho.map(escapar).join(";"), ...linhas].join("\r\n");
 }
 
-// ===== Login =====
+// ===== Login do administrador =====
 
 /** Devolve a sessão atual (ou null se não estiver logado). */
 async function obterSessao() {
@@ -145,20 +145,4 @@ async function entrar(email, senha) {
 
 async function sair() {
     await db.auth.signOut();
-}
-
-/** Cria conta de usuário comum. */
-async function cadastrar(nome, email, senha) {
-    const { data, error } = await db.auth.signUp({
-        email,
-        password: senha,
-        options: { data: { nome } },
-    });
-    return { erro: error, sessao: data ? data.session : null };
-}
-
-/** true se o usuário logado é administrador. */
-async function ehAdmin() {
-    const { data, error } = await db.rpc("is_admin");
-    return !error && data === true;
 }
