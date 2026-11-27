@@ -5,14 +5,14 @@ const filtroPrioridade = document.getElementById("filtro-prioridade");
 const campoBusca = document.getElementById("campo-busca");
 const campoOrdem = document.getElementById("campo-ordem");
 const botaoExportar = document.getElementById("botao-exportar");
-const areaLogin = document.getElementById("area-login");
 const areaAdmin = document.getElementById("area-admin");
-const formLogin = document.getElementById("form-login");
-const mensagemLogin = document.getElementById("mensagem-login");
 const botaoSair = document.getElementById("botao-sair");
 
 const STATUS_DISPONIVEIS = ["Aberto", "Em andamento", "Resolvido"];
 const NOMES_PRIORIDADE = { Baixa: "Baixa", Media: "Média", Alta: "Alta" };
+
+// Precisa ficar antes de iniciar() ser chamada
+let souAdmin = false;
 
 [filtroStatus, filtroPrioridade, campoOrdem].forEach((el) =>
     el.addEventListener("change", renderizarLista)
@@ -20,36 +20,25 @@ const NOMES_PRIORIDADE = { Baixa: "Baixa", Media: "Média", Alta: "Alta" };
 campoBusca.addEventListener("input", renderizarLista);
 botaoExportar.addEventListener("click", exportarCSV);
 
-formLogin.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
-    mensagemLogin.textContent = "Entrando...";
-    mensagemLogin.className = "mensagem-status";
-
-    const erro = await entrar(
-        document.getElementById("login-email").value.trim(),
-        document.getElementById("login-senha").value
-    );
-    if (erro) {
-        mensagemLogin.textContent = "E-mail ou senha incorretos.";
-        mensagemLogin.className = "mensagem-status mensagem-status-erro";
-        return;
-    }
-    formLogin.reset();
-    mensagemLogin.textContent = "";
-    iniciar();
-});
-
 botaoSair.addEventListener("click", async () => {
     await sair();
-    iniciar();
+    window.location.href = "login.html";
 });
 
-/** Mostra o login ou a lista, conforme a sessão. */
+/** Exige login. Admin vê tudo e pode gerenciar; usuário comum vê só os seus chamados. */
 async function iniciar() {
     const sessao = await obterSessao();
-    areaLogin.hidden = !!sessao;
-    areaAdmin.hidden = !sessao;
-    if (sessao) renderizarLista();
+    if (!sessao) {
+        window.location.href = "login.html";
+        return;
+    }
+    souAdmin = await ehAdmin();
+    areaAdmin.hidden = false;
+    document.getElementById("titulo-lista").textContent = souAdmin
+        ? "Lista de chamados"
+        : "Meus chamados";
+    botaoExportar.hidden = !souAdmin;
+    renderizarLista();
 }
 
 iniciar();
@@ -94,8 +83,10 @@ function atualizarContadores(todos) {
     });
 }
 
-/** Baixa um arquivo CSV com todos os chamados. */
+/** Baixa um arquivo CSV com todos os chamados (só administrador). */
 async function exportarCSV() {
+    if (!souAdmin) return;
+
     const todos = await listarChamados();
     if (todos.length === 0) {
         alert("Não há chamados para exportar.");
@@ -153,32 +144,38 @@ function criarCartaoChamado(chamado) {
 
     const acoes = criarElemento("div", "acoes-chamado");
 
-    const selectStatus = document.createElement("select");
-    selectStatus.setAttribute("aria-label", "Alterar status do chamado " + chamado.id);
-    STATUS_DISPONIVEIS.forEach((status) => {
-        const opcao = criarElemento("option", "", status);
-        opcao.value = status;
-        opcao.selected = status === chamado.status;
-        selectStatus.appendChild(opcao);
-    });
-    selectStatus.addEventListener("change", async () => {
-        await atualizarStatus(chamado.id, selectStatus.value);
-        renderizarLista();
-    });
-
-    const linkEditar = criarElemento("a", "botao-editar", "Editar");
-    linkEditar.href = "index.html?editar=" + chamado.id;
-
-    const botaoExcluir = criarElemento("button", "botao-excluir", "Excluir");
-    botaoExcluir.type = "button";
-    botaoExcluir.addEventListener("click", async () => {
-        if (confirm(`Excluir o chamado #${chamado.id}? Esta ação não pode ser desfeita.`)) {
-            await removerChamado(chamado.id);
+    if (souAdmin) {
+        const selectStatus = document.createElement("select");
+        selectStatus.setAttribute("aria-label", "Alterar status do chamado " + chamado.id);
+        STATUS_DISPONIVEIS.forEach((status) => {
+            const opcao = criarElemento("option", "", status);
+            opcao.value = status;
+            opcao.selected = status === chamado.status;
+            selectStatus.appendChild(opcao);
+        });
+        selectStatus.addEventListener("change", async () => {
+            await atualizarStatus(chamado.id, selectStatus.value);
             renderizarLista();
-        }
-    });
+        });
 
-    acoes.append(selectStatus, linkEditar, botaoExcluir);
+        const linkEditar = criarElemento("a", "botao-editar", "Editar");
+        linkEditar.href = "index.html?editar=" + chamado.id;
+
+        const botaoExcluir = criarElemento("button", "botao-excluir", "Excluir");
+        botaoExcluir.type = "button";
+        botaoExcluir.addEventListener("click", async () => {
+            if (confirm(`Excluir o chamado #${chamado.id}? Esta ação não pode ser desfeita.`)) {
+                await removerChamado(chamado.id);
+                renderizarLista();
+            }
+        });
+
+        acoes.append(selectStatus, linkEditar, botaoExcluir);
+    } else {
+        // Usuário comum só acompanha o status
+        acoes.appendChild(criarDetalhe("Status:", chamado.status));
+    }
+
     cartao.append(topo, descricao, detalhes, acoes);
     return cartao;
 }
