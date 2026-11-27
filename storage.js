@@ -146,3 +146,19 @@ async function entrar(email, senha) {
 async function sair() {
     await db.auth.signOut();
 }
+
+/** Cria conta de usuário comum. */
+async function cadastrar(nome, email, senha) {
+    const { data, error } = await db.auth.signUp({
+        email,
+        password: senha,
+        options: { data: { nome } },
+    });
+    return { erro: error, sessao: data ? data.session : null };
+}
+
+/** true se o usuário logado é administrador. */
+async function ehAdmin() {
+    const { data, error } = await db.rpc("is_admin");
+    return !error && data === true;
+}
