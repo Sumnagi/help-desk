@@ -5,7 +5,10 @@ const botaoAlternar = document.getElementById("alternar-modo");
 const botaoLogin = document.getElementById("botao-login");
 let modoCadastro = false;
 
-obterSessao().then((s) => { if (s) window.location.href = "index.html"; });
+// Já está logado? Vai direto para o início.
+obterSessao().then((s) => {
+    if (s) window.location.href = "index.html";
+});
 
 botaoAlternar.addEventListener("click", () => {
     modoCadastro = !modoCadastro;
@@ -14,6 +17,7 @@ botaoAlternar.addEventListener("click", () => {
     document.getElementById("titulo-login").textContent = modoCadastro ? "Criar conta" : "Entrar";
     botaoLogin.textContent = modoCadastro ? "Criar conta" : "Entrar";
     botaoAlternar.textContent = modoCadastro ? "Já tenho conta" : "Não tenho conta";
+    document.getElementById("login-senha").autocomplete = modoCadastro ? "new-password" : "current-password";
     msg.textContent = "";
 });
 
