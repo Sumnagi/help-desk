@@ -11,7 +11,6 @@ const botaoSair = document.getElementById("botao-sair");
 const STATUS_DISPONIVEIS = ["Aberto", "Em andamento", "Resolvido"];
 const NOMES_PRIORIDADE = { Baixa: "Baixa", Media: "Média", Alta: "Alta" };
 
-// Precisa ficar antes de iniciar() ser chamada
 let souAdmin = false;
 
 [filtroStatus, filtroPrioridade, campoOrdem].forEach((el) =>
@@ -25,7 +24,7 @@ botaoSair.addEventListener("click", async () => {
     window.location.href = "login.html";
 });
 
-/** Exige login. Admin vê tudo e pode gerenciar; usuário comum vê só os seus chamados. */
+/** Exige login. Admin vê tudo e gerencia; usuário comum vê só os seus chamados. */
 async function iniciar() {
     const sessao = await obterSessao();
     if (!sessao) {
