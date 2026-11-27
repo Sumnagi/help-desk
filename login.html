@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDesk Escolar - Entrar</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7fe0c0">
+    <link rel="icon" type="image/png" href="icons/logo-escola_20261125150937.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-conteudo">
+            <span class="topo-marca">
+                <img src="icons/logo-escola_20261125150937.png" alt="Logo E.E. João Lopes" class="logo-escola">
+                HelpDesk E. E. João Lopes
+            </span>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h1 id="titulo-login">Entrar</h1>
+        <p class="subtitulo">Entre para abrir chamados e acompanhar o andamento dos seus pedidos.</p>
+
+        <div class="cartao cartao-login">
+            <form id="form-login">
+                <div class="campo" id="campo-nome" hidden>
+                    <label for="login-nome">Nome</label>
+                    <input type="text" id="login-nome" autocomplete="name">
+                </div>
+                <div class="campo">
+                    <label for="login-email">E-mail</label>
+                    <input type="email" id="login-email" autocomplete="username" required>
+                </div>
+                <div class="campo">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" minlength="6" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="botao-principal" id="botao-login">Entrar</button>
+                <p class="mensagem-status" id="mensagem-login" role="status" aria-live="polite"></p>
+            </form>
+            <button type="button" class="botao-secundario" id="alternar-modo">Não tenho conta</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="storage.js"></script>
+    <script src="login.js"></script>
+    <script src="pwa.js"></script>
+</body>
+</html>
