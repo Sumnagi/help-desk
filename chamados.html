@@ -25,10 +25,30 @@
     </header>
 
     <main class="conteudo">
-        <h1 id="titulo-lista">Lista de chamados</h1>
+        <h1>Lista de chamados</h1>
 
+        <!-- Login: aparece quando não há administrador logado -->
+        <section id="area-login" hidden>
+            <p class="subtitulo">Área restrita. Entre com o e-mail e a senha de administrador.</p>
+            <div class="cartao cartao-login">
+                <form id="form-login">
+                    <div class="campo">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" autocomplete="username" required>
+                    </div>
+                    <div class="campo">
+                        <label for="login-senha">Senha</label>
+                        <input type="password" id="login-senha" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="botao-principal">Entrar</button>
+                    <p class="mensagem-status" id="mensagem-login" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Lista: aparece só para o administrador logado -->
         <div id="area-admin" hidden>
-            <p class="subtitulo">Acompanhe os chamados, busque por texto, filtre e ordene.</p>
+            <p class="subtitulo">Acompanhe os chamados, busque por texto, filtre, ordene e exporte.</p>
 
             <div class="barra-filtros">
                 <div class="campo campo-largo">
@@ -65,7 +85,7 @@
 
             <div class="barra-exportar">
                 <button type="button" id="botao-sair" class="botao-secundario">Sair</button>
-                <button type="button" id="botao-exportar" class="botao-secundario" hidden>Exportar CSV</button>
+                <button type="button" id="botao-exportar" class="botao-secundario">Exportar CSV</button>
             </div>
 
             <div id="mensagem-vazia" class="cartao mensagem-vazia" hidden>Nenhum chamado encontrado.</div>
