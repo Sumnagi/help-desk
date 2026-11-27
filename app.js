@@ -5,7 +5,7 @@ const botaoEnviar = document.getElementById("botao-enviar");
 let idEmEdicao = null;
 
 if (formChamado) {
-    prepararPagina();
+    iniciarModoEdicao();
 
     formChamado.addEventListener("submit", async function (evento) {
         evento.preventDefault();
@@ -38,13 +38,6 @@ if (formChamado) {
             const chamadoCriado = await salvarChamado(dadosChamado);
             exibirMensagem(`Chamado #${chamadoCriado.id} registrado com sucesso!`, "sucesso");
             formChamado.reset();
-
-            // Depois do reset, preenche o nome de novo
-            const sessao = await obterSessao();
-            if (sessao) {
-                document.getElementById("nome").value =
-                    (sessao.user.user_metadata || {}).nome || "";
-            }
         } catch (erro) {
             console.error(erro);
             exibirMensagem("Não foi possível salvar. Verifique a conexão e tente de novo.", "erro");
@@ -54,25 +47,14 @@ if (formChamado) {
     });
 }
 
-/** Exige login. Se estiver logado, preenche o nome e verifica o modo de edição. */
-async function prepararPagina() {
-    const sessao = await obterSessao();
-    if (!sessao) {
-        window.location.href = "login.html";
-        return;
-    }
-    const campoNome = document.getElementById("nome");
-    if (!campoNome.value) campoNome.value = (sessao.user.user_metadata || {}).nome || "";
-    await iniciarModoEdicao();
-}
-
-/** Se a URL tiver ?editar=ID, preenche o formulário com o chamado (só admin). */
+/** Se a URL tiver ?editar=ID, preenche o formulário com o chamado. */
 async function iniciarModoEdicao() {
     const idParam = new URLSearchParams(window.location.search).get("editar");
     if (idParam === null) return;
 
-    const admin = await ehAdmin();
-    if (!admin) {
+    // Só o administrador logado pode editar
+    const sessao = await obterSessao();
+    if (!sessao) {
         window.location.href = "chamados.html";
         return;
     }
