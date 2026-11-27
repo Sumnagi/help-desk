@@ -18,7 +18,7 @@ function converterLinha(l) {
     };
 }
 
-/** Busca todos os chamados. Retorna [] em caso de erro. */
+/** Busca os chamados (o banco já filtra: admin vê todos, usuário vê os seus). */
 async function listarChamados() {
     const { data, error } = await db.from("chamados").select("*").order("id", { ascending: false });
     if (error) {
@@ -35,7 +35,7 @@ async function obterChamado(id) {
     return converterLinha(data);
 }
 
-/** Cadastra um novo chamado (qualquer pessoa pode; usa uma função do banco). */
+/** Cadastra um novo chamado (exige login; usa uma função do banco). */
 async function salvarChamado(dados) {
     const { data, error } = await db.rpc("criar_chamado", {
         p_nome: dados.nome,
@@ -129,7 +129,7 @@ function gerarCSV(lista) {
     return "\uFEFF" + [cabecalho.map(escapar).join(";"), ...linhas].join("\r\n");
 }
 
-// ===== Login do administrador =====
+// ===== Login =====
 
 /** Devolve a sessão atual (ou null se não estiver logado). */
 async function obterSessao() {
