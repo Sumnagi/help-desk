@@ -39,7 +39,7 @@ if (formChamado) {
             exibirMensagem(`Chamado #${chamadoCriado.id} registrado com sucesso!`, "sucesso");
             formChamado.reset();
 
-            // Depois do reset, preenche o nome de novo para o usuário não precisar digitar
+            // Depois do reset, preenche o nome de novo
             const sessao = await obterSessao();
             if (sessao) {
                 document.getElementById("nome").value =
@@ -66,12 +66,11 @@ async function prepararPagina() {
     await iniciarModoEdicao();
 }
 
-/** Se a URL tiver ?editar=ID, preenche o formulário com o chamado. */
+/** Se a URL tiver ?editar=ID, preenche o formulário com o chamado (só admin). */
 async function iniciarModoEdicao() {
     const idParam = new URLSearchParams(window.location.search).get("editar");
     if (idParam === null) return;
 
-    // Só o administrador pode editar
     const admin = await ehAdmin();
     if (!admin) {
         window.location.href = "chamados.html";
